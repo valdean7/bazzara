@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block titulo %}Carrinho{% endblock titulo %}
+
+{% block conteudo %}
+    <main>
+        <section class="my-12 m-auto w-full md:w-[768px] bg-ligth-milk p-3">
+            <div class="border-b pb-4 border-ligth-gray grid grid-cols-8 gap-4">
+                <h2 class="text-2xl text-semiblack col-start-1 col-span-6 md:col-span-4">
+                    Carrinho de compras
+                </h2>
+                <span class="text-1xl col-start-5 hidden md:inline-block">Variação</span>
+                <span class="text-1xl col-start-6 hidden md:inline-block">Tamanho</span>
+                <span class="text-1xl col-start-7 hidden md:inline-block">Quantidade</span>
+                <span class="text-1xl col-start-8 hidden md:inline-block">Preço</span>
+            </div>
+            <form action="{% url "pedidos:pagar_pedidos" %}" method="post">
+                {% csrf_token %}
+                <div class="px-3 md:px-0">
+                    {% for produto in produtos %}
+                        <div class="flex flex-col md:grid md:grid-cols-8 gap-2 md:gap-4 pb-5 mt-5 border-b border-ligth-gray">
+                            <div class="flex gap-4 col-start-1 col-span-4">
+                                <div class="flex gap-4">
+                                    <div class="w-20 md:w-28">
+                                        <img src="{{produto.imagem}}" alt="{{produto.produto_nome}}">
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gap-2">
+                                    <a href="{% url "produtos:produto" produto.slug %}" class="text-1xl">{{produto.produto_nome}}</a>
+                                    <a class="text-[0.8rem] text-ligth-blue hover:underline" href="{% url "produtos:remover_produto" %}?pro={{produto.produto_id}}&var={{produto.variacao_nome}}&tamanho={{produto.tamanho}}">Remover do carrinho</a>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end md:justify-normal gap-2 col-start-5 text-1xl">
+                                <span class="md:hidden">Variação:</span>
+                                <p>{{produto.variacao_nome}}</p>
+                            </div>
+
+                            <div class="flex justify-end md:justify-normal gap-2 col-start-6 text-1xl">
+                                <span class="md:hidden">Tamanho:</span>
+                                <p>{{produto.tamanho}}</p>
+                            </div>
+
+                            <div class="flex justify-end md:justify-normal gap-2 col-start-7 text-1xl">
+                                <span class="md:hidden">Quantidade:</span>
+                                <div class="flex w-fit max-h-8">
+                                    <span class="text-[18px] px-[8px] text-center">{{produto.quantidade}}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end md:justify-normal gap-2 col-start-8 text-1xl">
+                                <span class="md:hidden">Preço:</span>
+                                {% if produto.preco_promocional > 0 %}
+                                    <div class="flex flex-col">
+                                        <p class="line-through text-gray-500">
+                                            {{produto.preco_quantitativo|format:'R$'}}
+                                        </p>
+                                        <p class="">
+                                            {{produto.preco_promocional|format:'R$'}}
+                                        </p>
+                                    </div>
+                                {% else %}
+                                    <p class="">
+                                        {{produto.preco_quantitativo|format:'R$'}}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    
+                    {% endfor %}
+                </div>
+                {% if produtos %}
+                    <div class="mt-4 flex flex-col gap-4 px-3 md:px-5">
+                        <div class="flex gap-2 self-end text-1xl">
+                            <span class="">total:</span>
+                            <span class="font-semibold">{{total|format:'R$'}}</span>
+                        </div>
+                        <div class="flex self-end">
+                            <button class="border-2 border-black uppercase py-1 px-2 font-semibold hover:text-white hover:bg-black transition duration-150" type="submit">fechar pedido</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </form>
+        </section>
+    </main>
+{% endblock conteudo %}

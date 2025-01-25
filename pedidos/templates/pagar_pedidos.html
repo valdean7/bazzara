@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+
+{% block conteudo %}
+
+<main class="md:h-[70vh]">
+    <div class="md:w-[768px] flex flex-col gap-3 mx-auto my-12">
+        <section class="bg-ligth-milk w-full">
+            <div class="flex flex-col gap-4 p-3">
+                <div class="grid grid-rows-1 justify-between border-b">
+
+                    <div class="col-span-3 col-start-1">
+                        <span class="text-2xl text-semiblack">
+                            Endereço de entrega
+                        </span>
+                    </div>
+
+                    <div class="col-span-1 col-start-4 self-end">
+                        <a href="{% url "endereco:editar_endereco" %}" class="text-[0.85rem] text-ligth-blue hover:underline ">editar endereço<a/>
+                    </div>
+
+                </div>
+                <div class="flex flex-col md:flex-row gap-4 md:gap-8 justify-between px-3 md:px-0">
+                    <div>
+                        <p class="font-bold">{{endereco.nome_completo}}</p>
+                        <p class="font-bold">{{endereco.telefone|stringformat:'s'|mask:'tel'}}</p>
+                    </div>
+                    <div class="flex gap-1 flex-wrap items-center">
+                        <img src="{% static "img/map-marker-line.svg" %}" alt="">
+                        <p>{{endereco.cidade}},</p>
+                        <p>{{endereco.rua}},</p>
+                        <p>{{endereco.numero}},</p>
+                        <p>{{endereco.bairro}},</p>
+                        <p>{{endereco.estado}},</p>
+                        <p>{{endereco.cep|stringformat:'s'|mask:'cep'}}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-ligth-milk w-full mx-auto">
+            <div class="flex flex-col gap-4 p-3">
+                <div class="border-b grid grid-cols-7">
+                    <span class="text-2xl text-semiblack col-span-5 md:col-span-3">Produtos pedidos</span>
+
+                    <p class="hidden md:inline-block text-1xl text-gray-400 col-start-4">Variação</p>
+                    <p class="hidden md:inline-block text-1xl text-gray-400 col-start-5">Preço unitário</p>
+                    <p class="hidden md:inline-block text-1xl text-gray-400 col-start-6">Quantidade</p>
+                    <p class="hidden md:inline-block text-1xl text-gray-400 col-start-7">Subtotal de items</p>
+                </div>
+
+                <div class="flex flex-col gap-5 px-3 md:px-0">
+                    {% for produto in produtos %}
+                        <div class="flex flex-col gap-2 md:gap-0 md:grid md:grid-cols-7 border-b pb-4">
+                            <div class="flex gap-5 md:col-start-1 col-span-3">
+                                <img class="w-12" src="{{produto.imagem}}" alt="{{produto.variacao_nome}}">
+                                <p class="text-1xl col-span-2">{{produto.produto_nome}}</p>
+                            </div>
+
+                            <div class="text-1xl col-start-4">
+                                <span class="inline-block md:hidden">Variação:</span>
+                                <span>{{produto.variacao_nome}}</span>
+                            </div>
+
+                            <div class="text-1xl col-start-5">
+                                <span class="inline-block md:hidden">Preço unitário:</span>
+                                <span>{{produto.preco|format:'R$'}}</span>
+                            </div>
+
+                            <div class="text-1xl col-start-6">
+                                <span class="inline-block md:hidden">Quantidade:</span>
+                                <span>{{produto.quantidade}}</span>
+                            </div>
+
+                            <div class="text-1xl col-start-7">
+                                <span class="inline-block md:hidden">Subtotal de items:</span>
+                                <span>{{produto.preco_quantitativo|format:'R$'}}</span>
+                            </div>
+                            
+                        </div>
+                    {% endfor %}
+                </div>
+                
+            </div>
+        </section>
+
+        <section class="bg-ligth-milk w-full mx-auto">
+            <div class="flex flex-col p-3 gap-4">
+                <span class="text-2xl text-semiblack border-b">Métodos de pagamentos</span>
+                <form action="{% url "pedidos:pagar" %}" method="post" class="flex flex-col gap-3 justify-between px-3">
+                    {% csrf_token %}
+                    <div class="flex flex-col gap-3">
+                        <div class="flex gap-3">
+                            <div class="flex flex-wrap gap-4 max-w-415px">
+                                <div class="variant w-fit px-2">
+                                    <span>Pix</span>
+                                    <div class="checked">
+                                        <img class="check-icon" src="{% static "img/check.svg" %}">
+                                        <input type="hidden" name="pix">
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="flex flex-wrap gap-4 max-w-415px">
+                                <div class="variant w-fit px-2">
+                                    <span>Boleto</span>
+                                    <div class="checked hidden">
+                                        <img class="check-icon" src="{% static "img/check.svg" %}">
+                                        <input type="hidden" name="boleto">
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="flex flex-wrap gap-4 max-w-415px">
+                                <div class="variant w-fit px-2">
+                                    <span>Cartão de crédito</span>
+                                    <div class="checked hidden">
+                                        <img class="check-icon" src="{% static "img/check.svg" %}">
+                                        <input disabled type="hidden" name="cartao">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3 md:self-end">
+                        <span>Preço total: 
+                            <span class="font-semibold">
+                                {{total|format:'R$'}}
+                            </span>
+                        </span>
+                        <button type="submit" class="w-fit border-2 border-black uppercase py-1 px-2 font-semibold hover:text-white hover:bg-black transition duration-150" type="submit">fazer pedido</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock conteudo %}

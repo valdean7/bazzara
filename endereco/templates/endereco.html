@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}Meu endereço{% endblock titulo %}
+
+{% block script %}
+    <script defer src="{% static 'js/endereco.js' %}"></script>
+{% endblock script %}
+
+{% block conteudo %}
+    <main class="h-[70vh]">
+        <div class="my-6 mx-auto md:w-[768px] bg-ligth-milk p-3">
+            <h2 class="text-2xl text-semiblack">Meu endereço</h2>
+            <hr>
+            <div class="mt-2 px-3 md:px-0 flex flex-col">
+                <div class="flex gap-2 items-center">
+                    <span>Nome:</span>
+                    <p>{{ endereco.nome_completo }}</p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span>Telefone:</span>
+                    <p id="meu_telefone" data-telefone="{{ endereco.telefone}}"></p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span>UF:</span>
+                    <p>{{ endereco.estado }}</p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span>Cidade:</span>
+                    <p>{{ endereco.cidade }}</p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span>Rua:</span>
+                    <p>{{ endereco.rua}}</p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span>Bairro:</span>
+                    <p>{{ endereco.bairro}}</p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span>Número:</span>
+                    <p>{{ endereco.numero}}</p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span>CEP:</span>
+                    <p id="meu_cep" data-cep="{{ endereco.cep }}"></p>
+                </div>
+                <a href="{% url 'endereco:editar_endereco' %}" class="w-fit mt-2 text-1xl border-2 border-black uppercase py-1 px-2 font-semibold hover:text-white hover:bg-black transition duration-150">editar</a>
+            </div>
+        </div> 
+    </main>
+{% endblock conteudo %}

@@ -1,0 +1,25 @@
+{% load static %}
+
+<html lang="pt-br">
+<head>
+    {% include "partials/_head.html" %}
+
+    {% block script %}{% endblock script %}
+
+    <title>
+        {% block titulo %}{% endblock titulo %}
+    </title>
+
+</head>
+<body class="bg-milk">
+    {% include "partials/_header.html" %}
+
+    
+
+    {% include "partials/_messages.html" %}
+
+    {% block conteudo %}{% endblock conteudo %}
+
+    {% include "partials/_footer.html" %}
+</body>
+</html>

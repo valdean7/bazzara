@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block titulo %}bazzara{% endblock titulo %}
+
+{% block conteudo %}
+<main>
+    <div class="w-[80vw] mx-auto">
+        <div class="flex flex-row flex-wrap gap-2 py-12 mx-auto">
+
+            {% for produto in produtos %}
+                <div class=" mt-2 w-60 h-[420px] p-2 flex flex-col items-center gap-2 relative justify-between border bg-ligth-milk">
+
+                    <a class="flex flex-col items-center gap-2" href="{% url "produtos:produto" produto.slug %}">
+                        <img class="w-[185px] h-fit" src="{{produto.variacoes.all.0.imagem_variacao.url}}" alt="{{produto.variacoes.all.0.nome_variacao}}">
+                        <span class=" max-h-[50px] font-semibold text-semiblack overflow-hidden overflow-ellipsis border">
+                            {{produto.nome}} 
+                        </span>
+                        <div class="flex flex-row gap-2">
+                            {% if produto.promocao > 0 %}
+                                <p class="font-bold">
+                                    {{produto.preco|addpromotion:produto.promocao|format:'R$'}}
+                                </p>
+                                <p class="font-bold text-gray-500 line-through">
+                                    {{produto.preco|format:'R$'}}
+                                </p>
+                            {% else %}
+                                <p class="font-bold">
+                                    {{produto.preco|format:'R$'}}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </a>
+
+                    <a class="w-full text-center uppercase text-1xl border-2 border-black py-1 hover:bg-black hover:text-white font-semibold transition duration-150 self-end" href="{% url 'produtos:produto' produto.slug %}">Ver mais detalhes</a>
+
+                    {% if produto.promocao > 0 %}
+                        <div class="absolute top-0 right-0 bg-black text-white p-1 font-semibold text-1xl">{{produto.promocao}}%</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</main>
+{% endblock conteudo %}

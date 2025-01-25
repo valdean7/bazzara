@@ -1,0 +1,17 @@
+{% load static %}
+
+{% if messages %}
+    {% comment %} <div class="hidden alert-success alert-error"></div> {% endcomment %}
+    <div class="message-container flex-col gap-3 flex  w-fit fixed z-10 right-2 translate-y-1 ">
+        {% for message in messages %}
+            {% if message.tags != 'info' %}
+                <div class="alert alert-{{ message.tags }}">
+                    <div class="h-fit pl-2">
+                        <p>{{ message }}</p>
+                    </div>
+                    <button class="close-btn px-2 h-fit"><img class="w-fit h-fit" src="{% static 'img/x-icon.svg' %}" alt=""></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

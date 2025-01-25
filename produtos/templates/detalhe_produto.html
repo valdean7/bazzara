@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block script %}
+    <script defer src="{% static "js/detalhe_produto.js" %}"></script>
+{% endblock script %}
+
+
+{% block titulo %}produto{% endblock titulo %}
+
+{% block conteudo %}
+    <main>
+        <div class="flex flex-col gap-4 md:w-[768px] mt-12 mx-auto">
+            <section class=" bg-ligth-milk flex sm:flex-col md:flex-row gap-12 justify-center p-3">
+                <div class="flex justify-center px-3 md:px-0">
+                    <img id="produto_imagem" class="w-full sm:max-w-[340px] md:max-w-[340px] border" src="{{variacoes.0.imagem_variacao.url}}" alt="{{variacoes.nome_variacao}}">
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <div class="max-w-415px flex flex-col gap-4">
+                    <h1 id="produto_nome" class="text-2xl text-semiblack">{{produto.nome}}</h1>
+
+                    <div class="flex gap-3">
+                        {% if produto.promocao > 0 %}
+                            <p class="text-2xl">{{produto.preco|addpromotion:produto.promocao|format:'R$'}}</p>
+                            <p class="text-2xl line-through text-gray-500">{{produto.preco|format:'R$'}}</p>
+                        {% else %}
+                            <p id="produto_preco" class="text-2xl">{{produto.preco|format:'R$'}}</p>
+                        {% endif %}
+                    </div>
+
+                    </div>
+                    
+                    <form method="post" action="{% url "produtos:add_produto" %}" class="flex flex-col gap-4" id="produto_form">
+                        {% csrf_token %}
+                        <div class="flex flex-row gap-2">
+                            <div>
+                                <h3>Modelo:</h3>
+                                <div class="flex flex-wrap gap-3 max-w-415px">
+
+
+                                    {% for variacao in variacoes %}
+                                        <div class="variant" data-nome="{{variacao.nome_variacao}}">
+
+                                            {% if variacao.imagem_variacao %}
+                                                <img src="{{variacao.imagem_variacao.url}}" alt="{{variacao.nome_variacao}}" class="img-size" id="variant_{{ forloop.counter0}}">
+                                            {% else %}
+                                                <img src="" alt="{{produto.nome}}" class="img-size" id="variant_{{ forloop.counter0}}">
+                                            {% endif %}
+
+                                            <div class="checked hidden">
+                                                <img class="check-icon" src="{% static 'img/check.svg' %}" alt="check">
+                                            </div>
+
+                                            <div class="hidden" id="var_esp_{{ forloop.counter0 }}">
+                                                {% for esp in variacao.especificacoes.all %}
+                                                    <p>{{esp.tamanho}}/{{esp.estoque}}</p>  
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                    {% endfor %}
+                                    
+                                    <input type="hidden" name="model" id="variante_nome">
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                        
+                        <div>
+                            <h3>Tamanho:</h3>
+                            <div class="esp_container flex flex-wrap gap-4 max-w-415px">
+
+                                {% for esp in variacoes.0.especificacoes.all %}
+
+                                    <div {% if esp.estoque <= 0 %}class="esp_size variant pointer-events-none opacity-40"
+                                    {% else %}
+                                    class="esp_size variant"
+                                    {% endif %}>
+                                        <span class="uppercase w-full h-full select-none flex justify-center items-center">{{esp.tamanho}}</span>
+                                        <div class="checked hidden">
+                                            <img class="check-icon" src="{% static 'img/check.svg' %}" alt="check">
+                                        </div>
+                                    </div>
+
+                                {% endfor %}
+                                
+                                <input type="hidden" name="size" id="especificacao_tamanho">
+                                
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3>Quantidade:</h3>
+                            <div class="flex w-fit max-h-8 border border-nude-400" id="quant_container" data-estoque="{{estoque}}">
+                                <button class="text-2xl border-r-[1px] border-r-nude-400 px-[6px]" type="button" id="decrement">-</button>
+                                <input class="w-10 text-center focus:outline-none" type="text" name="quant" value="1" id="quantidade"></input>
+                                <button class="text-2xl border-l-[1px] border-nude-400 px-[6px]" type="button" id="increment">+</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="product" value="{{produto.pk}}"></input>
+                        <input type="hidden" name="slug" value="{{produto.slug}}"></input>
+                        <input type="hidden" name="product_name" value="{{produto.nome}}">
+                        <input type="hidden" name="price" id="preco" value="{{produto.preco}}">
+                        <input type="hidden" name="image" id="imagem">
+                        <input type="hidden" name="promotion" value="{{produto.promocao}}">
+                        <button class="uppercase sm:w-fit border border-black py-2 px-3 font-semibold hover:bg-black hover:text-white transition duration-150">adicionar ao carrinho</button>
+                    </form>
+                </div>
+            </section>
+            <section class="flex flex-col gap-5 bg-ligth-milk p-3">
+                <div class="flex flex-col gap-3">
+                    <h2 class="text-2xl">Detalhes do produto</h2>
+                    <div class="flex flex-col gap-4 px-3 md:px-0">
+                        <div class="flex gap-4">
+                            <h3 class="text-1xl text-gray-500">Estoque</h3>
+                            <span class="text-1xl">{{estoque|safe}}</span>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <h3 class="text-1xl text-gray-500">detalhe</h3>
+                            <p class="text-1xl">{{produto.descricao}}</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <h2 class="text-2xl">Avaliação do produto</h2>
+                    <div class="flex sm:flex-col md:flex-row gap-5 items-center py-6 bg-nude-200 px-3">
+                        <div class="flex flex-col">
+                            <span class="font-bold truncate">4.5 de 5</span>
+                            <span class="text-1xl">@ @ @ @ @</span>
+                        </div>
+                        <div class="flex flex-wrap gap-4 border">
+                            <div class="border border-semiblack flex items-center h-8 px-3 hover:bg-black hover:text-white transition duration-150">Todos (2543)</div>
+                            <div class="border border-semiblack flex items-center h-8 px-3 hover:bg-black hover:text-white transition duration-150">5 estrelas (1543)</div>
+
+                            <div class="border border-semiblack flex items-center h-8 px-3 hover:bg-black hover:text-white transition duration-150">4 estrelas (1222)</div>
+
+                            <div class="border border-semiblack flex items-center h-8 px-3 hover:bg-black hover:text-white transition duration-150">3 estrelas (543)</div>
+
+                            <div class="border border-semiblack flex items-center h-8 px-3 hover:bg-black hover:text-white transition duration-150">2 estrelas (153)</div>
+
+                            <div class="border border-semiblack flex items-center h-8 px-3 hover:bg-black hover:text-white transition duration-150">1 estrelas (43)</div>
+                        </div>
+                    </div>
+                    <div class="px-3 md:px-0">
+                        <div class="flex flex-col gap-2 border-b border-gray-200 pb-6 mb-4">
+                            
+                            <div class="flex gap-3">
+                                <div class=" w-12 h-12 rounded-full bg-teal-500 border overflow-hidden">
+                                    <img src="{% static 'img/41pdx7mNjjL._AC_SX679_.jpg' %}" alt="Foto do perfíl" >
+                                </div>
+                                <div>
+                                    <p>anonymousUser</p>
+                                    <span>@ @ @ @ @</span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <div>
+                                    <span class="text-gray-500">20-08-2024 as 02:45:48</span> |
+                                    <span class="text-gray-500">Variação: KIT 1</span>
+                                </div>
+                                <div class="w-[80%]">
+                                    <p class="text-1xl">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Praesentium, doloribus quia similique inventore quo corporis excepturi recusandae atque cum porro a, asperiores aperiam eos tempore! Placeat cum fugit dolor quas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+{% endblock conteudo %}

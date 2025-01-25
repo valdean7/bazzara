@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        font-family: 'Raleway', sans-serif;
+        box-sizing: border-box;
+    }
+}
+
+@layer components {
+    .option {
+        @apply text-1xl select-none
+    }
+
+    .option:hover {
+        @apply md:border-b-[2px] md:border-white
+    }
+
+    .variant {
+        @apply w-10 h-10 border border-nude-400 cursor-pointer flex justify-center items-center relative overflow-hidden z-20
+    }
+
+    .checked {
+        @apply absolute bottom-0 right-0 bg-black w-12 h-8 -rotate-[50deg] translate-x-8 translate-y-3
+    }
+
+    .img-size {
+        @apply w-fit h-fit -z-10
+    }
+
+    .check-icon {
+        @apply translate-x-3 rotate-45
+    }
+
+    .dropdown-li {
+        @apply hover:bg-[#f5f5f5] px-2 h-8 flex items-center
+    }
+
+    .alert {
+        @apply flex items-center h-10 rounded-md overflow-hidden
+    }
+
+    .alert-success {
+        @apply bg-[#d4edda] border-2 border-[#c3e6cb] text-[#155724]
+    }
+
+    .alert-error {
+        @apply bg-[#f8d7da] border-2 border-[#f5c6cb] text-[#721c24]
+    }
+}

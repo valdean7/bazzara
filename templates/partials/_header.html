@@ -1,0 +1,85 @@
+{% load static %}
+
+
+<header class="bg-nude-400 ">
+    <div class="h-fit flex flex-col gap-8 py-3">
+        <div class="flex items-center justify-between mx-3 h-full">
+            <div class="flex items-center gap-3">
+                <div class="md:hidden rounded-full bg-nude-500 relative">
+                    <img src="{% static 'img/list.svg' %}" alt="">
+                    <aside class="hidden absolute h-fit z-10 bg-white p-3 w-[210px]">
+                        <nav>
+                            <ul class="uppercase text-[12px] flex flex-col gap-2 items-center">
+                                <li class=""><a href="#">produtos em promoção</a></li>
+                                <li class=""><a href="#">blusas</a></li>
+                                <li class=""><a href="#">camisas</a></li>
+                                <li class=""><a href="#">calçados</a></li>
+                                <li class=""><a href="#">calsas</a></li>
+                                <li class=""><a href="#">shorts</a></li>
+                            </ul>
+                        </nav>
+                    </aside>
+                </div>
+                <h1 class="text-2xl md:text-4xl font-extrabold"><a href="{% url "produtos:home" %}">BAZZARA</a></h1>
+            </div>
+            <div>
+                <form method="post" class="flex">
+                    <input class="focus:outline-none w-[130px] md:w-[300px] bg-nude-400 border-b border-black pb-1 placeholder:text-white" type="text" name="busca" id="busca" placeholder="Procurar por algo">
+                    <button><img class="w-6 h-6" src="{% static 'img/search.svg' %}" alt="search"></button>
+                </form>
+            </div>
+            <div>
+                <nav>
+                    <ul class="flex gap-3">
+                        <li class="relative cursor-pointer uppercase text-1xl">
+                            <span id="perfil" class="flex justify-center gap-1">
+                                <img title="Profile" src="{% static 'img/user.svg' %}" alt="shopping" class="h-5 w-5 inline">
+                                <p class="hidden md:inline select-none">Perfil</p>
+                            </span>
+                            <div id="perfil_dropdown" class="absolute hidden right-[-30px] top-8 md:right-1 border">
+
+                                <nav class="uppercase text-1xl flex flex-col z-50 relative before:content-[''] before:absolute before:border-solid before:border-transparent before:border-t-[8px] before:border-l-[8px] before:border-r-[8px] before:border-b-0 before:border-t-white before:rotate-180 before:-translate-y-2 before:right-[30px] md:before:right-[50px]  bg-white">
+                                    {% if request.user.is_authenticated %}
+                                        <li class="dropdown-li">
+                                            <a href="{% url 'registro:logout' %}">sair</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="dropdown-li">
+                                            <a href="{% url 'registro:registrar' %}">entrar/registrar</a>
+                                        </li>
+                                    {% endif %}
+                                    <li class="dropdown-li">
+                                        <a href="">meus pedidos</a>
+                                    </li>
+                                    <li class="dropdown-li">
+                                        <a href="{% url 'endereco:meu_endereco' %}">endereço</a>
+                                    </li>
+                                </nav>
+
+                            </div>
+                        </li>
+                        <li class="cursor-pointer uppercase text-1xl">
+                            <a href="{% url "produtos:carrinho" %}" class="flex justify-center gap-1">
+                                <img title="Cart" src="{% static 'img/shopping-cart.svg' %}" alt="cart-shopping" class="inline h-6 w-6">
+                                <p class="hidden md:inline select-none">Carrinho</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="h-full hidden md:flex items-center">
+            <nav class="w-full">
+                <ul class="flex justify-around uppercase font-semibold text-semiblack h-18px">
+                    <li class="option"><a href="#">produtos em promoção</a></li>
+                    <li class="option"><a href="#">blusas</a></li>
+                    <li class="option"><a href="#">camisas</a></li>
+                    <li class="option"><a href="#">calçados</a></li>
+                    <li class="option"><a href="#">calsas</a></li>
+                    <li class="option"><a href="#">shorts</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

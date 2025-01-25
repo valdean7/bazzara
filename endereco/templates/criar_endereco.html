@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}Criar endereço{% endblock titulo %}
+
+{% block script %}
+    <script defer src="{% static 'js/criar_endereco.js' %}"></script>
+{% endblock script %}
+
+{% block conteudo %}
+    <main class="md:h-[70vh]">
+        <div class="flex gap-20 justify-center my-12 w-full md:w-[768px] mx-auto bg-ligth-milk p-3 md:p-3">
+            <section class="w-full md:w-fit">
+                <h2 class="font-semibold mb-3 text-semiblack">Criar meu endereco</h2>
+                <form method="post" class="flex flex-col gap-4">
+                    {% csrf_token %}
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex flex-col w-[100%] md:w-80">
+                            <label class="text-semiblack text-1xl" for="nome_completo">Nome completo</label>
+                            <input class="border focus:outline-none pl-1 h-10" type="text" name="nome_completo" id="nome_completo" value="{{request.POST.nome_completo}}" placeholder="Digite seu nome completo">
+                            {% for error in form.nome_completo.errors %}
+                                <p class="text-[11px] text-red-500 font-semibold">
+                                    {{error}}
+                                </p>
+                            {% endfor %}
+                        </div>
+                        <div class="flex flex-col w-[100%] md:w-80">
+                            <label class="text-semiblack text-1xl" for="telefone">Telefone</label>
+                            <input class="border focus:outline-none pl-1 h-10" type="tel" name="telefone" id="telefone" placeholder="Digite seu telefone" value="{{request.POST.telefone}}">
+                            {% for error in form.telefone.errors %}
+                                <p class="text-[11px] text-red-500 font-semibold">
+                                    {{error}}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-[100%] md:w-80">
+
+                        <label class="text-semiblack text-1xl" for="estado">Estado</label>
+                        <select class="border focus:outline-none pl-1 h-10" name="estado" id="estado" aria-placeholder="Selecione seu Estado">
+                            <option class="text-gray-500" disabled selected hidden>
+                                Selecione seu estado
+                            </option>
+                        </select>
+                        {% for error in form.estado.errors %}
+                                <p class="text-[11px] text-red-500 font-semibold">
+                                    {{error}}
+                                </p>
+                            {% endfor %}
+                    </div>
+                    <div class="flex gap-6 w-full">
+                        <div class="flex flex-col w-full">
+                            <label class="text-semiblack text-1xl" for="cidade">Cidade</label>
+                            <select disabled class="border focus:outline-none pl-1 h-10" name="cidade" id="cidade">
+                                <option class="text-gray-500" disabled selected hidden>
+                                    Selecione sua cidade
+                                </option>
+                            </select>
+                            {% for error in form.cidade.errors %}
+                                <p class="text-[11px] text-red-500 font-semibold">
+                                    {{error}}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col w-[100%]">
+                        <label class="text-semiblack text-1xl" for="rua">Rua</label>
+                        <input class="border focus:outline-none pl-1 h-10" type="text" name="rua" id="rua" placeholder="Digite o nome da rua" value="{{request.POST.rua}}">
+                        {% for error in form.rua.errors %}
+                            <p class="text-[11px] text-red-500 font-semibold">
+                                {{error}}
+                            </p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="flex flex-col w-[100%] md:w-80">
+                        <label class="text-semiblack text-1xl" for="bairro">Bairro</label>
+                        <input class="border focus:outline-none pl-1 h-10" type="text" name="bairro" id="bairro" placeholder="Digite o nome do bairro" value="{{request.POST.bairro}}">
+                        {% for error in form.bairro.errors %}
+                            <p class="text-[11px] text-red-500 font-semibold">
+                                {{error}}
+                            </p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex flex-col w-[100%] md:w-80 relative">
+                            <label class="text-semiblack text-1xl" for="numero">Número</label>
+                            <input class="border focus:outline-none pl-1 h-10" type="text" name="numero" id="numero" placeholder="Digite o número da casa" value="{{request.POST.numero}}">
+                            {% for error in form.numero.errors %}
+                                <p class="text-[11px] text-red-500 font-semibold">
+                                    {{error}}
+                                </p>
+                            {% endfor %}
+                            <div class="flex gap-2 absolute right-0 translate-y-[30px]" id="cb_controler">
+                                <input type="checkbox" name="cb_numero" id="cb_numero">
+                                <p class="text-gray-500 text-1xl select-none">Sem número</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col w-[100%] md:w-80">
+                            <label class="text-semiblack text-1xl" for="cep">CEP</label>
+                            <input class="border focus:outline-none pl-1 h-10" type="text" name="cep" id="cep" placeholder="Digite o CEP com 8 dígitos" value="{{request.POST.cep}}">
+                            {% for error in form.cep.errors %}
+                                <p class="text-[11px] text-red-500 font-semibold">
+                                    {{error}}
+                                </p>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <button class="w-fit border-2 border-black uppercase py-1 px-2 font-semibold hover:text-white hover:bg-black transition duration-150" type="submit">salvar</button>
+                </form>
+            </section>
+        </div>
+    </main>
+{% endblock conteudo %}

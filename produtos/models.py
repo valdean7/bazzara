@@ -1,6 +1,8 @@
 from django.db import models as m
 from django.utils.text import slugify
 import uuid
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Categoria(m.Model):
@@ -59,3 +61,22 @@ class Especificacao(m.Model):
 
     def __str__(self) -> str:
         return f'tamanho: {self.tamanho}; estoque: {self.estoque}'
+
+
+class Avaliacao(m.Model):
+    variacao = m.ForeignKey(Variacao, on_delete=m.CASCADE)
+    avaliador = m.ForeignKey(User, on_delete=m.CASCADE)
+    comentario = m.TextField(max_length=255)
+    avaliacao = m.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    criado_em = m.DateTimeField(auto_now_add=True)
+
+
+    class Meta:
+        verbose_name = 'Avaliação'
+        verbose_name_plural = 'Avaliações'
+
+
+    def __str__(self):
+        return f'{self.avaliador.username} - {self.variacao.nome_variacao}'

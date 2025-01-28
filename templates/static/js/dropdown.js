@@ -25,7 +25,7 @@ perfil.addEventListener('mouseleave', () => {
         if (! isHovered) {
             perfilDropdown.style.display = 'none'
         }
-    }, 130)
+    }, 135)
 })
 
 perfilDropdown.addEventListener('mouseenter', () => {

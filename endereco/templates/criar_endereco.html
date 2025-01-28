@@ -12,8 +12,17 @@
         <div class="flex gap-20 justify-center my-12 w-full md:w-[768px] mx-auto bg-ligth-milk p-3 md:p-3">
             <section class="w-full md:w-fit">
                 <h2 class="font-semibold mb-3 text-semiblack">Criar meu endereco</h2>
-                <form method="post" class="flex flex-col gap-4">
+                <form method="post" enctype="multipart/form-data" class="flex flex-col gap-4">
                     {% csrf_token %}
+                    <div class="flex flex-col w-[100%] md:w-80">
+                        <label class="text-semiblack text-1xl" for="foto">Perfil</label>
+                        <input type="file" accept="image/png, image/jpeg, image/svg+xml" id="foto" name="foto">
+                        {% for error in form.foto.errors %}
+                            <p class="text-[11px] text-red-500 font-semibold">
+                                {{error}}
+                            </p>
+                        {% endfor %}
+                    </div>
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col w-[100%] md:w-80">
                             <label class="text-semiblack text-1xl" for="nome_completo">Nome completo</label>

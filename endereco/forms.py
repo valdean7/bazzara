@@ -6,7 +6,7 @@ class EnderecoForm(forms.ModelForm):
     class Meta:
         model = Endereco
         fields = [
-            'nome_completo', 'telefone', 'estado', 'cidade', 'rua', 'bairro', 'numero', 'cep'
+            'foto', 'nome_completo', 'telefone', 'estado', 'cidade', 'rua', 'bairro', 'numero', 'cep'
         ]
 
 

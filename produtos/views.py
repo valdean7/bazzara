@@ -53,7 +53,7 @@ def adicionar_no_carrinho(request: HttpRequest):
         variacao__nome_variacao=variacao_nome).exists()
 
         if not pro_existe or not var_existe or not esp_existe:
-            messages.error(request, 'Ouve uma falha ao adicionar o produto no  carrinho. Tente novamente.')
+            messages.error(request, 'Houve uma falha ao adicionar o produto no  carrinho. Tente novamente.')
             return redirect(http_referer)
         
         if not request.session.get('carrinho'):

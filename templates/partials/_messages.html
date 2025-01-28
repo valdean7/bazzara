@@ -1,11 +1,12 @@
 {% load static %}
 
 {% if messages %}
-    {% comment %} <div class="hidden alert-success alert-error"></div> {% endcomment %}
+
     <div class="message-container flex-col gap-3 flex  w-fit fixed z-10 right-2 translate-y-1 ">
+        <p class="hidden alert_error alert_success alert_warning"></p>
         {% for message in messages %}
             {% if message.tags != 'info' %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert_{{ message.tags }}">
                     <div class="h-fit pl-2">
                         <p>{{ message }}</p>
                     </div>

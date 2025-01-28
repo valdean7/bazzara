@@ -23,7 +23,7 @@ def registrar(request: HttpRequest):
                 messages.success(request, 'Conta criada com sucesso.')
                 return redirect('registro:registrar')
             except:
-                messages.error(request, 'Ouve uma falha ao criar a conta, tente novamente.')
+                messages.error(request, 'Houve uma falha ao criar a conta, tente novamente.')
                 return redirect('registro:registrar')
         else:
             return render(request, 'index.html', {'form': form})
@@ -52,7 +52,7 @@ def entrar(request: HttpRequest):
         
         login(request, usuario)
 
-        return redirect('registro:registrar')
+        return redirect('produtos:home')
 
 
 def sair(request: HttpRequest):
@@ -60,5 +60,5 @@ def sair(request: HttpRequest):
     logout(request)
     request.session['carrinho'] = carrinho
     request.session.save()
-    return redirect('registro:registrar')
+    return redirect('produtos:home')
     

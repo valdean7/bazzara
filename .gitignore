@@ -172,3 +172,13 @@ cython_debug/
 
 # vscode
 .vscode/
+
+# media
+media/produtos/img/**
+!media/produtos/img/.gitkeep
+media/perfils/*
+!media/perfils/.gitkeep
+
+# node
+node_modules
+package-lock.json

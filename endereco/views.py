@@ -30,7 +30,7 @@ def editar_endereco(request: HttpRequest):
     
     if request.method == 'POST':
         endereco = get_object_or_404(Endereco, usuario=request.user)
-        form = EnderecoForm(request.POST, instance=endereco)
+        form = EnderecoForm(request.POST, request.FILES, instance=endereco)
 
         try:
             if form.is_valid():
@@ -41,7 +41,7 @@ def editar_endereco(request: HttpRequest):
                 
                 return redirect('endereco:meu_endereco')
             else:
-                form = EnderecoForm(request.POST, instance=endereco)
+                form = EnderecoForm(request.POST, request.FILES, instance=endereco)
                 return render(request, 'editar_endereco.html', {
                 'endereco': request.POST, 
                 'form': form
@@ -61,7 +61,7 @@ def criar_endereco(request: HttpRequest):
         return render(request, 'criar_endereco.html', {'form': {}})
     
     if request.method == 'POST':
-        form = EnderecoForm(request.POST)
+        form = EnderecoForm(request.POST, request.FILES)
         try:
             if form.is_valid():
                 endereco = form.save(commit=False)
@@ -74,3 +74,15 @@ def criar_endereco(request: HttpRequest):
         except:
             messages.error(request, 'Falha ao criar o endereço.')
             return redirect('endereco:criar_endereco')
+
+
+@login_required(redirect_field_name='endereco:criar_endereco')
+def apagar_endereco(request: HttpRequest):
+    endereco = Endereco.objects.filter(usuario=request.user).first()
+    if endereco:
+        try:
+            endereco.delete()
+        except:
+            messages.error(request, 'Houve uma falha ao apagar o endereço.')
+            return redirect('endereco:meu_endereco')
+    return redirect('endereco:criar_endereco')

@@ -42,11 +42,25 @@
         @apply flex items-center h-10 rounded-md overflow-hidden
     }
 
-    .alert-success {
+    .alert_success {
         @apply bg-[#d4edda] border-2 border-[#c3e6cb] text-[#155724]
     }
 
-    .alert-error {
+    .alert_error {
         @apply bg-[#f8d7da] border-2 border-[#f5c6cb] text-[#721c24]
+    }
+
+    .alert_warning {
+        @apply bg-[#fff3cd] border-2 border-[#ffeeba] text-[#856404]
+    }
+
+    .btn {
+        @apply w-fit mt-2 text-1xl border-2 border-black uppercase py-1 px-2
+        font-semibold hover:text-white hover:bg-black transition duration-150
+    }
+
+    .btn_delete {
+        @apply w-fit mt-2 text-1xl text-red-500 border-2 border-red-500 uppercase py-1 px-2
+        font-semibold hover:text-white hover:bg-red-500 transition duration-150
     }
 }

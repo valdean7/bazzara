@@ -3,12 +3,13 @@ from django.urls import reverse
 from django.http.request import HttpRequest
 from .models import Produto, Variacao, Especificacao
 from utils.carrinho import (variacao_existe, aplicar_desconto, remover_produto,
-                            pegar_produtos, produtos_preco_total)
+                            pegar_produtos, produtos_preco_total, preco_quant)
 from django.contrib import messages
 
 
 def home(request: HttpRequest):
     produtos = Produto.objects.all()
+    # del request.session['carrinho']
     return render(request, 'home.html', {'produtos': produtos})
 
 
@@ -70,9 +71,7 @@ def adicionar_no_carrinho(request: HttpRequest):
             'slug': slug,
             'preco': preco,
             'imagem': imagem,
-            'preco_quantitativo': quantidade * preco,
             'promocao': promocao,
-            'preco_promocional': aplicar_desconto((quantidade * preco), promocao)
         }
 
         if produto_id in carrinho:

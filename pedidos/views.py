@@ -3,15 +3,17 @@ from django.http import HttpRequest
 from endereco.models import Endereco
 from utils.carrinho import (pegar_produtos, produtos_preco_total,
                             editar_produtos)
-from pprint import pprint
 from payment_emulation.payment.paymentSDK import PaymentSDK
 from utils.decorators import login_required_warning
+import json
 
 
 @login_required_warning(redirect_url='registro:registrar')
 def pagar_pedidos(request: HttpRequest):
-    endereco = Endereco.objects.filter(usuario=request.user).first()
     carrinho = request.session.get('carrinho', {})
+    if len(carrinho) == 0:
+        return redirect('produtos:home')
+    endereco = Endereco.objects.filter(usuario=request.user).first()
     produtos = pegar_produtos(carrinho)
     total = produtos_preco_total(produtos)
 
@@ -21,7 +23,7 @@ def pagar_pedidos(request: HttpRequest):
 
 def efetuar_pagamento(request: HttpRequest):
     carrinho = request.session.get('carrinho', {})
-    seed = PaymentSDK.get_seeds()['REPROBI']
+    seed = PaymentSDK.get_seeds()['PROBATUS']
     cpf = seed['account'].get('cpf')
     card_number = seed['card'].get('card_number')
     cvv = seed['card'].get('cvv')
@@ -33,5 +35,7 @@ def efetuar_pagamento(request: HttpRequest):
 
     sdk = PaymentSDK(itens)
     response = sdk.payment(cpf,card_number,validity, cvv, holder)
-    pprint(response)
+    res_json = json.loads(response)
+    if res_json['transaction'] == 'success':
+        del request.session['carrinho']
     return redirect('pedidos:pagar_pedidos')

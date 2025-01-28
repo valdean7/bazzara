@@ -5,10 +5,12 @@
 
 {% block script %}
     <script defer src="{% static 'js/endereco.js' %}"></script>
+    <script defer src="{% static 'js/delete_modal.js' %}"></script>
 {% endblock script %}
 
 {% block conteudo %}
     <main class="h-[70vh]">
+        {% include "partials/_delete_modal.html" with url="/endereco/apagar" %}
         <div class="my-6 mx-auto md:w-[768px] bg-ligth-milk p-3">
             <h2 class="text-2xl text-semiblack">Meu endereço</h2>
             <hr>
@@ -60,7 +62,7 @@
                     <div class="w-56 flex flex-row justify-between">
                         <a href="{% url 'endereco:editar_endereco' %}" class="btn">editar</a>
 
-                        <a href="{% url 'endereco:apagar_endereco' %}" class="btn_delete">apagar</a>
+                        <button onclick="handleConfirm()" class="btn_delete">apagar</button>
                     </div>
                 </div>
             </div>

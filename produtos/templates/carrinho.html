@@ -53,18 +53,19 @@
 
                             <div class="flex justify-end md:justify-normal gap-2 col-start-8 text-1xl">
                                 <span class="md:hidden">Preço:</span>
-                                {% if produto.preco_promocional > 0 %}
+                                {% if produto.promocao > 0 %}
                                     <div class="flex flex-col">
                                         <p class="line-through text-gray-500">
-                                            {{produto.preco_quantitativo|format:'R$'}}
+                                            
+                                            {{produto.preco|format:'R$'}}
                                         </p>
                                         <p class="">
-                                            {{produto.preco_promocional|format:'R$'}}
+                                            {{produto.preco|addpromotion:produto.promocao|format:'R$'}}
                                         </p>
                                     </div>
                                 {% else %}
                                     <p class="">
-                                        {{produto.preco_quantitativo|format:'R$'}}
+                                        {{produto.preco|format:'R$'}}
                                     </p>
                                 {% endif %}
                             </div>

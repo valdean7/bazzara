@@ -35,7 +35,7 @@
     }
 
     .dropdown-li {
-        @apply hover:bg-[#f5f5f5] px-2 h-8 flex items-center
+        @apply hover:bg-[#ecebeb] px-2 h-7 flex items-center font-medium
     }
 
     .alert {

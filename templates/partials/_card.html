@@ -1,0 +1,49 @@
+{% load static %}
+{% load custom_filters %}
+
+<div class="w-40 md:w-[240px] bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div>
+        <!-- Imagem do Produto -->
+        <div class="relative">
+            {% if produto.promocao > 0 %}
+            <span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded">
+                Oferta!
+            </span>
+            {% endif %}
+            <img class="h-40 md:h-48 w-full object-cover" src="{{ produto.variacoes.all.0.imagem_variacao.url }}" alt="{{ produto.nome }}">
+        </div>
+
+        <!-- Informações do Produto -->
+        <div class="p-3 space-y-2">
+            <!-- Título e Preço -->
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold text-gray-800 truncate" title="{{ produto.nome }}">{{ produto.nome }}</h3>
+                <div class="flex items-center gap-2">
+                    {% if produto.promocao > 0 %}
+                    <span class="text-sm md:text-xl">
+                        {{produto.preco|addpromotion:produto.promocao|format:'R$'}}
+                    </span>
+                    <span class="text-xs md:text-sm text-gray-500 line-through">
+                        {{produto.preco|format:'R$'}}
+                    </span>
+                    <span class="text-xs md:text-sm font-bold text-red-600">-{{ produto.promocao }}%</span>
+                    {% else %}
+                    <span class="text-sm md:text-xl">
+                        {{produto.preco|format:'R$'}}
+                    </span>
+                    {% endif %}
+                    
+                </div>
+            </div>
+
+            <div>
+                <span></span>
+            </div>
+
+            <!-- Ações -->
+            <div class="w-full pt-1 flex flex-row justify-between">
+                <a class="w-full btn text-center text-sm" href="{% url "produtos:produto" produto.slug %}">ver detalhes</a>
+            </div>
+        </div>
+    </div>
+</div>

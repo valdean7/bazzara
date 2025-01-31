@@ -1,0 +1,54 @@
+{% load static %}
+
+<div id="modal_overlay_rating" class="fixed inset-0 bg-gray-900/70 flex justify-center items-center z-50">
+    <div class="bg-white p-5 rounded-lg shadow-xl max-w-md w-[90%]">
+        <form id="reviewForm" method="post" class="space-y-4">
+            <!-- Campo de classificação -->
+            <div id="rating" 
+                class="flex gap-1 justify-center"
+                role="radiogroup"
+                aria-label="Classificação por estrelas">
+                {% for i in "12345" %}
+                <button type="button"
+                        data-rating="{{ forloop.counter }}"
+                        class="star-button relative p-1 transition-transform hover:scale-110"
+                        aria-label="{{ forloop.counter }} estrela{{ forloop.counter|pluralize }}">
+                    <div class="relative w-8 h-8">
+                        
+                        <svg class="absolute inset-0" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m0 0h24v24h-24z" fill="#fff" opacity="0" transform="matrix(0 1 -1 0 24 0)"/><path d="m17.56 21a1 1 0 0 1 -.46-.11l-5.1-2.67-5.1 2.67a1 1 0 0 1 -1.45-1.06l1-5.63-4.12-4a1 1 0 0 1 -.25-1 1 1 0 0 1 .81-.68l5.7-.83 2.51-5.13a1 1 0 0 1 1.8 0l2.54 5.12 5.7.83a1 1 0 0 1 .81.68 1 1 0 0 1 -.25 1l-4.12 4 1 5.63a1 1 0 0 1 -.4 1 1 1 0 0 1 -.62.18z" fill="#c4c4c4"/></svg>
+
+                        <svg class="absolute inset-0 opacity-0 transition-opacity duration-200 outline-star" width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="#f7df0a" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" stroke="#f7df0a" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+
+                    </div>
+                </button>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="rating" id="selectedRating" value="0" required>
+
+            <!-- Campo de comentário -->
+            <div>
+                <textarea 
+                    name="comment" 
+                    id="comment"
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    rows="4"
+                    placeholder="Deixe seu comentário (opcional)..."
+                    aria-label="Campo de comentário opcional"></textarea>
+            </div>
+
+            <!-- Mensagem de erro -->
+            <p id="ratingError" class="text-red-500 text-sm hidden" aria-live="polite">
+                Por favor, selecione uma classificação antes de enviar.
+            </p>
+
+            <!-- Botão de envio -->
+            <button 
+                type="submit"
+                class="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                Enviar Avaliação
+            </button>
+        </form>
+    </div>
+</div>

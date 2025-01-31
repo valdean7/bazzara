@@ -7,6 +7,7 @@ from utils.carrinho import (variacao_existe, aplicar_desconto, remover_produto,
 from django.contrib import messages
 
 
+
 def home(request: HttpRequest):
     produtos = Produto.objects.all()
     # del request.session['carrinho']

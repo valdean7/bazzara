@@ -10,9 +10,9 @@
 {% block titulo %}produto{% endblock titulo %}
 
 {% block conteudo %}
-    <main>
+    <main class="sm:px-2">
         <div class="flex flex-col gap-4 md:w-[768px] mt-12 mx-auto">
-            <section class=" bg-ligth-milk flex sm:flex-col md:flex-row gap-12 justify-center p-3">
+            <section class="shadow-md bg-ligth-milk flex sm:flex-col md:flex-row gap-12 justify-center p-3">
                 <div class="flex justify-center px-3 md:px-0">
                     <img id="produto_imagem" class="w-full sm:max-w-[340px] md:max-w-[340px] border" src="{{variacoes.0.imagem_variacao.url}}" alt="{{variacoes.nome_variacao}}">
                 </div>
@@ -110,7 +110,7 @@
                     </form>
                 </div>
             </section>
-            <section class="flex flex-col gap-5 bg-ligth-milk p-3">
+            <section class="shadow-md flex flex-col gap-5 bg-ligth-milk p-3 mb-8">
                 <div class="flex flex-col gap-3">
                     <h2 class="text-2xl">Detalhes do produto</h2>
                     <div class="flex flex-col gap-4 px-3 md:px-0">

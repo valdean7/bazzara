@@ -38,7 +38,7 @@
                             </span>
                             <div id="perfil_dropdown" class="absolute hidden right-[-30px] top-8 md:right-1 border">
 
-                                <nav class="uppercase text-1xl flex flex-col z-50 relative before:content-[''] before:absolute before:border-solid before:border-transparent before:border-t-[8px] before:border-l-[8px] before:border-r-[8px] before:border-b-0 before:border-t-white before:rotate-180 before:-translate-y-2 before:right-[30px] md:before:right-[50px]  bg-white">
+                                <nav class="uppercase shadow-md w-[150px] text-1xl flex flex-col z-50 relative before:content-[''] before:absolute before:border-solid before:border-transparent before:border-t-[8px] before:border-l-[8px] before:border-r-[8px] before:border-b-0 before:border-t-white before:rotate-180 before:-translate-y-2 before:right-[30px] md:before:right-[50px]  bg-white">
                                     {% if request.user.is_authenticated %}
                                         <li class="dropdown-li">
                                             <a href="{% url 'registro:logout' %}">sair</a>

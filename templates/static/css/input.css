@@ -11,19 +11,27 @@
 
 @layer components {
     .option {
-        @apply text-1xl select-none
+        @apply text-1xl select-none h-[36px]
     }
 
     .option:hover {
-        @apply md:border-b-[2px] md:border-white
+        @apply border-b border-white text-white transition-colors 
+        duration-150 bg-[linear-gradient(to_top,#fff_0%,transparent_10%)]
+    }
+
+    .option_hover {
+        @apply border-b border-white text-white transition-colors 
+        duration-100 bg-[linear-gradient(to_top,#fff_0%,transparent_15%)]
     }
 
     .variant {
-        @apply w-10 h-10 border border-nude-400 cursor-pointer flex justify-center items-center relative overflow-hidden z-20
+        @apply w-10 h-10 border border-nude-400 cursor-pointer flex
+        justify-center items-center relative overflow-hidden z-20
     }
 
     .checked {
-        @apply absolute bottom-0 right-0 bg-black w-12 h-8 -rotate-[50deg] translate-x-8 translate-y-3
+        @apply absolute bottom-0 right-0 bg-black w-12 h-8 -rotate-[50deg] 
+        translate-x-8 translate-y-3
     }
 
     .img-size {
@@ -35,7 +43,15 @@
     }
 
     .dropdown-li {
-        @apply hover:bg-[#ecebeb] px-2 h-7 flex items-center font-medium
+        @apply hover:bg-[#ecebeb] h-7 flex items-center font-medium px-2
+    }
+
+    .dropdown_up_arrow {
+        @apply before:content-[''] before:absolute before:border-solid 
+        before:border-transparent before:border-t-[8px] before:border-l-[8px] 
+        before:border-r-[8px] before:border-b-0 before:border-t-white 
+        before:rotate-180 before:-translate-y-2 before:right-[32px] 
+        md:before:right-[52px]
     }
 
     .alert {
@@ -60,7 +76,17 @@
     }
 
     .btn_delete {
-        @apply w-fit mt-2 text-1xl text-red-500 border-2 border-red-500 uppercase py-1 px-2
-        font-semibold hover:text-white hover:bg-red-500 transition duration-150
+        @apply w-fit mt-2 text-1xl text-red-500 border-2 border-red-500
+        uppercase py-1 px-2 font-semibold hover:text-white hover:bg-red-500
+        transition duration-150
+    }
+
+    .btn_star {
+        @apply border border-semiblack flex items-center h-8 px-3 
+        hover:bg-black hover:text-white transition duration-150 cursor-pointer
+    }
+
+    .btn_star_selected {
+        @apply bg-black text-white hover:text-black hover:bg-nude-200
     }
 }

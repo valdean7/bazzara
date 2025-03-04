@@ -13,17 +13,23 @@ def preco_quant(quant: int, valor: float, promocao: int):
 def variacao_existe(produtos, dados):
     existe = False
     for produto in produtos:
-        if produto['variacao_nome'] == dados['variacao_nome'] and produto['tamanho'] == dados['tamanho']:
+        if produto['variacao_nome'] == dados['variacao_nome'] \
+        and produto['tamanho'] == dados['tamanho'] \
+        and produto['variacao_id'] == dados['variacao_id']:
             produto['quantidade'] = int(produto['quantidade']) + dados['quantidade']
             existe = True
     return (existe, produtos)
 
 
 def remover_produto(carrinho: dict[str,list[dict]], 
-                        produto_id, nome, tamanho):
+                        produto_id, variacao_nome, tamanho, variacao_id):
     produtos_restantes = []
     for produto in carrinho[produto_id]:
-            if produto['variacao_nome'] != nome and produto['tamanho'] != tamanho:
+            if (produto['variacao_nome'] == variacao_nome) \
+            and (produto['tamanho'] == tamanho) \
+            and (produto['variacao_id'] == variacao_id):
+                ...
+            else:
                 produtos_restantes.append(produto)
 
     carrinho[produto_id] = produtos_restantes
@@ -73,3 +79,7 @@ def editar_produtos(produtos: list[dict]) -> list[dict]:
             produtos_editados.append(produto_copia)
     
     return produtos_editados
+
+
+def pegar_variacoes(produtos):
+    ...

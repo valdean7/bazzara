@@ -5,8 +5,8 @@
 {% block titulo %}Carrinho{% endblock titulo %}
 
 {% block conteudo %}
-    <main>
-        <section class="shadow-md my-12 m-auto w-full md:w-[768px] bg-ligth-milk p-3">
+    <main class="min-h-[calc(100vh-435px)]">
+        <section class="bg-ligth-milk p-3 shadow-md my-12 m-auto max-w-7xl">
             <div class="pb-4 grid grid-cols-8 gap-4 {% if produtos %}border-b border-ligth-gray{% endif %}">
                 <h2 class="text-2xl text-semiblack col-start-1 col-span-6 md:col-span-4">
                     Carrinho de compras {% if not produtos %}vazio{% endif %}
@@ -20,61 +20,64 @@
             </div>
             <form action="{% url "pedidos:pagar_pedidos" %}" method="post">
                 {% csrf_token %}
-                <div class="px-3 md:px-0">
-                    {% for produto in produtos %}
-                        <div class="flex flex-col md:grid md:grid-cols-8 gap-2 md:gap-4 pb-5 mt-5 border-b border-ligth-gray">
-                            <div class="flex gap-4 col-start-1 col-span-4">
-                                <div class="flex gap-4">
-                                    <div class="w-20 md:w-28">
-                                        <img src="{{produto.imagem}}" alt="{{produto.produto_nome}}">
+                {% if produtos %}
+                    <div class="px-3 md:px-0">
+                        {% for produto in produtos %}
+                            <div class="flex flex-col md:grid md:grid-cols-8 gap-2 md:gap-4 pb-5 mt-5 border-b border-ligth-gray">
+                                <div class="flex gap-4 col-start-1 col-span-4">
+                                    <div class="flex gap-4">
+                                        <div class="w-20 md:w-28">
+                                            <img src="{{produto.imagem}}" alt="{{produto.produto_nome}}">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="{% url "produtos:produto" produto.slug %}" class="text-1xl">{{produto.produto_nome}}</a>
+                                        <a class="text-[0.8rem] text-ligth-blue hover:underline" href="{% url "produtos:remover_produto" %}?pro={{produto.produto_id}}&var={{produto.variacao_nome}}&tamanho={{produto.tamanho}}&var_id={{produto.variacao_id}}">Remover do carrinho</a>
                                     </div>
                                 </div>
-
-                                <div class="flex flex-col gap-2">
-                                    <a href="{% url "produtos:produto" produto.slug %}" class="text-1xl">{{produto.produto_nome}}</a>
-                                    <a class="text-[0.8rem] text-ligth-blue hover:underline" href="{% url "produtos:remover_produto" %}?pro={{produto.produto_id}}&var={{produto.variacao_nome}}&tamanho={{produto.tamanho}}">Remover do carrinho</a>
+                                <div class="flex justify-end md:justify-normal gap-2 col-start-5 text-1xl">
+                                    <span class="md:hidden">Variação:</span>
+                                    <p class="text-gray-500">{{produto.variacao_nome}}</p>
                                 </div>
-                            </div>
-
-                            <div class="flex justify-end md:justify-normal gap-2 col-start-5 text-1xl">
-                                <span class="md:hidden">Variação:</span>
-                                <p>{{produto.variacao_nome}}</p>
-                            </div>
-
-                            <div class="flex justify-end md:justify-normal gap-2 col-start-6 text-1xl">
-                                <span class="md:hidden">Tamanho:</span>
-                                <p>{{produto.tamanho}}</p>
-                            </div>
-
-                            <div class="flex justify-end md:justify-normal gap-2 col-start-7 text-1xl">
-                                <span class="md:hidden">Quantidade:</span>
-                                <div class="flex w-fit max-h-8">
-                                    <span class="text-[18px] px-[8px] text-center">{{produto.quantidade}}</span>
+                                <div class="flex justify-end md:justify-normal gap-2 col-start-6 text-1xl">
+                                    <span class="md:hidden">Tamanho:</span>
+                                    <p>{{produto.tamanho}}</p>
                                 </div>
-                            </div>
-
-                            <div class="flex justify-end md:justify-normal gap-2 col-start-8 text-1xl">
-                                <span class="md:hidden">Preço:</span>
-                                {% if produto.promocao > 0 %}
-                                    <div class="flex flex-col">
-                                        <p class="line-through text-gray-500">
-                                            
+                                <div class="flex justify-end md:justify-normal gap-2 col-start-7 text-1xl">
+                                    <span class="md:hidden">Quantidade:</span>
+                                    <div class="flex w-fit max-h-8">
+                                        <span class="text-[18px] px-[8px] text-center">{{produto.quantidade}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end md:justify-normal gap-2 col-start-8 text-1xl">
+                                    <span class="md:hidden">Preço:</span>
+                                    {% if produto.promocao > 0 %}
+                                        <div class="flex flex-col">
+                                            <p class="line-through text-gray-500">
+                
+                                                {{produto.preco|format:'R$'}}
+                                            </p>
+                                            <p class="">
+                                                {{produto.preco|addpromotion:produto.promocao|format:'R$'}}
+                                            </p>
+                                        </div>
+                                    {% else %}
+                                        <p class="">
                                             {{produto.preco|format:'R$'}}
                                         </p>
-                                        <p class="">
-                                            {{produto.preco|addpromotion:produto.promocao|format:'R$'}}
-                                        </p>
-                                    </div>
-                                {% else %}
-                                    <p class="">
-                                        {{produto.preco|format:'R$'}}
-                                    </p>
-                                {% endif %}
+                                    {% endif %}
+                                </div>
                             </div>
+                
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="w-full flex flex-col justify-center items-center">
+                        <div class="m-auto flex flex-col justify-center gap-3">
+                            <img class="w-52" src="{% static "img/empty_card.svg" %}">
                         </div>
-                    
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endif %}
                 {% if produtos %}
                     <div class="mt-4 flex flex-col gap-4 px-3 md:px-5">
                         <div class="flex gap-2 self-end text-1xl">

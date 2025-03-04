@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Endereco(m.Model):
-    usuario = m.ForeignKey(User,on_delete=m.CASCADE)
+    usuario = m.OneToOneField(User,on_delete=m.CASCADE, related_name='endereco')
     foto = m.ImageField(upload_to='perfils',null=True, blank=True)
     nome_completo = m.CharField(max_length=255)
     telefone = m.CharField(max_length=11)

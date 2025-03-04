@@ -6,6 +6,8 @@ const incrementarBtn = document.getElementById('increment')
 const decrementarBtn = document.getElementById('decrement')
 const quantidadeInput = document.getElementById('quantidade')
 const formulario = document.getElementById('produto_form')
+const ratingContainer = document.getElementById('rating_container')
+const starBtnContainer = document.getElementById('star_btn_container')
 
 
 // tratamento das variações
@@ -21,8 +23,10 @@ const changeProdutoImagem = (link) => {
 
 const toggleVariation = (targetElement) => {
     const input = document.getElementById('variante_nome')
+    const inputId = document.getElementById('variante_id')
     const imagemInput = document.getElementById('imagem')
     const dataNome = targetElement.dataset.nome
+    const dataId = targetElement.dataset.id
     variantes.forEach(variante => {
         const variantNode = variante.closest('.variant')
         if (! variantNode.isSameNode(targetElement)) {
@@ -37,10 +41,12 @@ const toggleVariation = (targetElement) => {
     if (variacaoClasses.classList.contains('hidden')) {
         variacaoClasses.classList.remove('hidden')
         input.setAttribute('value', dataNome)
+        inputId.setAttribute('value', dataId)
         imagemInput.setAttribute('value', variacaoImagem.slice(mediaIndex))
     } else {
         variacaoClasses.classList.add('hidden')
         input.setAttribute('value', "")
+        inputId.setAttribute('value', "")
         imagemInput.setAttribute('value', "")
     }
 }
@@ -194,4 +200,45 @@ formulario.addEventListener('submit', (e) => {
     if (modelo && tamanho && quantidade && imagem) {
         formulario.submit()
     }
+})
+
+const toggleComments = (star) => {
+    const comments = ratingContainer.querySelectorAll('comment')
+    comments.forEach(comment => {
+        if (star === 'all') {
+            if (comment.classList.contains('hidden')) {
+                comment.classList.replace('hidden', 'flex')
+            }
+        } else  {
+            if (comment.dataset.rating !== star) {
+                if (comment.classList.contains('flex')) {
+                    comment.classList.replace('flex', 'hidden')
+                }
+            }
+            if (comment.dataset.rating === star) {
+                if (comment.classList.contains('hidden')) {
+                    comment.classList.replace('hidden', 'flex')
+                }
+            }
+        }
+        
+    })
+}
+
+
+const starBtn = starBtnContainer.querySelectorAll('div')
+starBtn.forEach(item => {
+    item.addEventListener('click', function() {
+        const star = this.dataset.star
+        starBtn.forEach(btn => {
+            if (this === btn) {
+                btn.classList.add('btn_star_selected')
+            } else {
+                if (btn.classList.contains('btn_star_selected')) {
+                    btn.classList.remove('btn_star_selected')
+                }
+            }
+        })
+        toggleComments(star)
+    })
 })

@@ -5,8 +5,8 @@
 
 {% block conteudo %}
 
-<main class="md:h-[70vh]">
-    <div class="md:w-[768px] flex flex-col gap-3 mx-auto my-12">
+<main class="min-h-[calc(100vh-435px)]">
+    <div class="max-w-7xl flex flex-col gap-3 mx-auto my-12">
         <section class="shadow-md bg-ligth-milk w-full">
             <div class="flex flex-col gap-4 p-3">
                 <div class="grid grid-rows-1 justify-between border-b">
@@ -95,42 +95,9 @@
 
         <section class="shadow-md bg-ligth-milk w-full mx-auto">
             <div class="flex flex-col p-3 gap-4">
-                <span class="text-2xl text-semiblack border-b">Métodos de pagamentos</span>
                 <form action="{% url "pedidos:pagar" %}" method="post" class="flex flex-col gap-3 justify-between px-3">
                     {% csrf_token %}
-                    <div class="flex flex-col gap-3">
-                        <div class="flex gap-3">
-                            <div class="flex flex-wrap gap-4 max-w-415px">
-                                <div class="variant w-fit px-2">
-                                    <span>Pix</span>
-                                    <div class="checked">
-                                        <img class="check-icon" src="{% static "img/check.svg" %}">
-                                        <input type="hidden" name="pix">
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="flex flex-wrap gap-4 max-w-415px">
-                                <div class="variant w-fit px-2">
-                                    <span>Boleto</span>
-                                    <div class="checked hidden">
-                                        <img class="check-icon" src="{% static "img/check.svg" %}">
-                                        <input type="hidden" name="boleto">
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="flex flex-wrap gap-4 max-w-415px">
-                                <div class="variant w-fit px-2">
-                                    <span>Cartão de crédito</span>
-                                    <div class="checked hidden">
-                                        <img class="check-icon" src="{% static "img/check.svg" %}">
-                                        <input disabled type="hidden" name="cartao">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="flex flex-col gap-3 md:self-end">
                         <span>Preço total: 
                             <span class="font-semibold">

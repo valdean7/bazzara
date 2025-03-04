@@ -1,4 +1,5 @@
 from django.template import Library
+from django.utils.safestring import mark_safe
 
 
 register = Library()
@@ -27,3 +28,30 @@ def mask(value: str, type):
 @register.filter
 def subtotal(value, quant):
     return quant * value
+
+
+@register.simple_tag()
+def pathname(path):
+    match path:
+        case '/pedidos/todos':
+            return 'Todos os pedidos'
+        case '/pedidos/a_pagar':
+            return 'Pedidos a pagar'
+        case '/pedidos/finalizados':
+            return 'Pedidos finalizados'
+        case '/pedidos/cancelados':
+            return 'Pedidos cancelados'
+        case '/pedidos/devolvidos':
+            return 'Pedidos devolvidos'
+
+
+@register.filter
+def cardlength(card):
+    length = 0
+    for card_item in card.items():
+        for item in card_item[1]:
+            length += item['quantidade']
+    if length > 0:
+        return length
+    else:
+        return ''

@@ -56,9 +56,12 @@ def entrar(request: HttpRequest):
 
 
 def sair(request: HttpRequest):
-    carrinho = deepcopy(request.session['carrinho'])
-    logout(request)
-    request.session['carrinho'] = carrinho
-    request.session.save()
+    if request.session.get('carrinho'):
+        carrinho = deepcopy(request.session['carrinho'])
+        logout(request)
+        request.session['carrinho'] = carrinho
+        request.session.save()
+    else:
+        logout(request)
     return redirect('produtos:home')
     

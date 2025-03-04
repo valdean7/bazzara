@@ -8,11 +8,12 @@ const toggleShowPassword = (e, inputPassword) => {
     if (e.target.src.includes('eye-on.svg')) {
         const newSrc = e.target.src.replace('eye-on.svg', 'eye-off.svg')
         e.target.src = newSrc
-        inputPassword.setAttribute('type', 'text')
-    } else {
+        inputPassword.setAttribute('type', 'password')
+    } 
+    else if (e.target.src.includes('eye-off.svg')) {
         const newSrc = e.target.src.replace('eye-off.svg', 'eye-on.svg')
         e.target.src = newSrc
-        inputPassword.setAttribute('type', 'password')
+        inputPassword.setAttribute('type', 'text')
     }
 }
 

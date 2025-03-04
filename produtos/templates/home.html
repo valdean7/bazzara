@@ -4,13 +4,8 @@
 
 {% block titulo %}bazzara{% endblock titulo %}
 
-{% block script %}
-    <script defer src="{% static "js/rating.js" %}"></script>
-{% endblock script %}
-
 {% block conteudo %}
-<main class="">
-    {% include "partials/_rating_modal.html" %}
+<main class="min-h-[calc(100vh-387px)]">
     <div class="md:max-w-[1024px] sm:px-2 mx-auto">
         <div class="flex flex-row flex-wrap justify-center gap-2 py-12">
 

@@ -21,7 +21,7 @@ def editar_endereco(request: HttpRequest):
         http_referer = request.META.get('HTTP_REFERER')
         if '/pagar_pedidos/' in http_referer:
             request.session['temp_url'] = reverse('pedidos:pagar_pedidos')
-            request.session.modified =True
+            request.session.modified = True
 
         if not Endereco.objects.filter(usuario=request.user).exists():
             return redirect('endereco:criar_endereco')

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('reviewForm');
-    const modalOverlayRating = document.getElementById('modal_overlay_rating');
+    // const modalOverlayRating = document.getElementById('modal_overlay_rating');
     const ratingContainer = document.getElementById('rating');
     const outlineStars = ratingContainer.querySelectorAll('.outline-star');
     const selectedRatingInput = document.getElementById('selectedRating');
@@ -17,16 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Fechar modal ao clicar fora
-    modalOverlayRating.addEventListener('click', function(e) {
-        const display = modalOverlayRating.computedStyleMap().get('display')
-        if (e.target === this) {
-            if (display.value === 'flex') {
-                modalOverlayRating.classList.replace('flex', 'hidden')
-            }
-        };
+    // // Fechar modal ao clicar fora
+    // modalOverlayRating.addEventListener('click', function(e) {
+    //     const display = modalOverlayRating.computedStyleMap().get('display')
+    //     if (e.target === this) {
+    //         if (display.value === 'flex') {
+    //             modalOverlayRating.classList.replace('flex', 'hidden')
+    //         }
+    //     };
         
-    });
+    // });
 
     // Eventos de interação com as estrelas
     ratingContainer.addEventListener('mouseover', (e) => {

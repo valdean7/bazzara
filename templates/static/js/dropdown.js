@@ -4,6 +4,12 @@ let isHovered = false
 let hasClicked = false
 
 
+document.addEventListener('click', function(e) {
+    if (!perfil.contains(e.target)) {
+        hasClicked = false
+        perfilDropdown.style.display = 'none'
+    }
+})
 
 perfil.addEventListener('click', () => {
     if (hasClicked) {

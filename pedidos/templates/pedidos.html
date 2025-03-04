@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block conteudo %}
+<main class="min-h-[calc(100vh-435px)]">
+    <div class="max-w-7xl my-12  mx-auto">
+        <section class="flex flex-col gap-2">
+            <nav class="bg-ligth-milk flex flex-wrap justify-between p-4">
+                <a href="{% url "pedidos:pedidos" %}" class="{% if '/pedidos/todos' in request.path %} underline {% endif %}">Todos</a>
+                <a class="{% if '/pedidos/a_pagar' in request.path %} underline {% endif %}" href="{% url "pedidos:pedidos_a_pagar" %}">A pagar</a>
+                <a href="{% url "pedidos:finalizados" %}" class="{% if '/pedidos/finalizados' in request.path %} underline {% endif %}">Finalizado</a>
+                <a class="{% if '/pedidos/cancelados' in request.path %} underline {% endif %}" href="{% url "pedidos:cancelados" %}">Pedidos cancelados</a>
+                <a href="{% url "pedidos:devolvidos" %}" class="{% if '/pedidos/devolvidos' in request.path %} underline {% endif %}">Devoluções</a>
+            </nav>
+            {% if 'pedidos/todos' in request.path %}
+                <div class="h-[50px]">
+                    <form action="#" class="flex">
+                        <button class="border-r-0 border px-2" type="submit"><img src="{% static "img/search.svg" %}" alt=""></button>
+                        <input class="w-full py-3 pl-2 border-l-0 border focus:outline-none" type="search" name="busca" placeholder="Busque pelo nome do produto" value="">
+                    </form>
+                </div>
+            {% endif %}
+            <div class="bg-ligth-milk p-3">
+                <div class="flex flex-col gap-4">
+                    <div class="border-b grid grid-cols-7">
+                        <span class="text-2xl text-semiblack col-span-3">{% pathname request.path %}</span>
+                        {% if pedidos %}
+                            <p class="text-1xl col-start-4 hidden md:inline-block">Variação</p>
+                            <p class="text-1xl col-start-5 hidden md:inline-block">Preço unitário</p>
+                            <p class="text-1xl col-start-6 hidden md:inline-block">Unidades</p>
+                            <p class="text-1xl col-start-7 hidden md:inline-block">Subtotal de items</p>
+                        {% endif %}
+                    </div>
+    
+                    {% if pedidos %}
+                        {% for pedido in pedidos %}
+                            <div class="flex flex-col gap-5">
+                                <div class="flex flex-col gap-2 md:gap-0 md:grid md:grid-cols-7 border-b pb-4 px-3 md:px-0">
+                                    <div class="flex gap-5 col-start-1 col-span-3">
+                                        <img class="w-14 h-14" src="{{ pedido.imagem }}" alt="{{ pedido.produto_nome }}">
+                                        <div class="flex flex-col">
+                                            <a href="{% url "produtos:produto" pedido.slug %}" class="text-1xl col-span-2">
+                                                {{ pedido.produto_nome }}
+                                            </a>
+                                            {% if pedido.status == 'PD' %}
+                                                <div class="flex flex-row gap-3">
+                                                    {% comment %} <a href="#" class="text-[0.8rem] text-ligth-blue hover:underline">Aguardando pagamento</a> {% endcomment %}
+                                                    <p class="text-yellow-700 text-[0.8rem]">Aguardando pagamento</p>
+                                                    <a href="{% url "pedidos:cancelar_pedido" pedido.id %}" class="text-red-700 text-[0.8rem] hover:underline">Cancelar</a>
+                                                </div>
+                                            {% endif %}
+
+                                            {% if pedido.status == 'PG' %}
+                                                <div class="{% if pedido.pk in avaliacoes_ids %}hidden{% else %}flex{% endif %} flex-row gap-3">
+                                                    <a href="{% url "produtos:avaliacao" pedido.id %}" class="text-[0.8rem] text-ligth-blue hover:underline hover:cursor-pointer">Avaliar produto</a>
+                                                    <a href="{% url "pedidos:devolver" pedido.id %}" class="text-gray-500 text-[0.8rem] hover:underline">Devolver produto</a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-start-4 text-1xl">
+                                        <span class="md:hidden">Variação:</span>
+                                        <span class="text-gray-500">{{ pedido.variacao_nome }}</span>
+                                    </div>
+
+                                    <div class="col-start-5 text-1xl">
+                                        <span class="md:hidden">Preço unitário:</span>
+                                        <div class="flex flex-col">
+                                            {% if pedido.produto.promocao > 0 %}
+                                            <span>{{ pedido.produto.preco|addpromotion:pedido.produto.promocao|format:'R$' }}</span>
+                                            <span class="line-through text-gray-500">{{ pedido.produto.preco|format:'R$' }}</span>
+                                            {% else %}
+                                            <span>{{ pedido.produto.preco|format:'R$' }}</span>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-start-6 text-1xl">
+                                        <span class="md:hidden">Quantidade:</span>
+                                        <span>{{ pedido.quantidade }}</span>
+                                    </div>
+
+                                    <div class="col-start-7 text-1xl">
+                                        <span class="md:hidden">Subtotal dos items:</span>
+                                        <span>{{ pedido.produto.preco|addpromotion:pedido.produto.promocao|subtotal:pedido.quantidade|format:'R$' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="w-full flex flex-col justify-center items-center">
+                            <div class="m-auto flex flex-col justify-center gap-3">
+                                <img class="w-52" src="{% static "img/no_data.svg" %}">
+                                <p class="self-end text-gray-500 text-2xl">Ainda não há pedidos</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock conteudo %}
